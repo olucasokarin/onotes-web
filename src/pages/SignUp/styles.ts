@@ -28,12 +28,7 @@ export const Content = styled.div`
 
     h1 {
       font-weight: 300;
-    }
-
-    p {
-      font-size: 1.8rem;
-      margin-top: 20px;
-      margin-bottom: 70px;
+      margin-bottom: 80px;
     }
 
     a {
