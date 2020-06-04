@@ -5,10 +5,13 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import GlobalStyle from './styles/global';
 
 import Routes from './routes/index';
+import AppProvider from './hooks/index';
 
 const App: React.FC = () => (
   <Router>
-    <Routes />
+    <AppProvider>
+      <Routes />
+    </AppProvider>
     <GlobalStyle />
   </Router>
 );
