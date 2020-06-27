@@ -30,6 +30,8 @@ import { useAuth } from '../../hooks/auth';
 import Input from '../../components/Input';
 import Textarea from '../../components/Textarea';
 
+import ModalAdd from '../../components/ModalAdd';
+
 interface Categories {
   id: string;
   name: string;
@@ -48,6 +50,10 @@ interface NoteFormData {
   content: string;
 }
 
+interface IRequestModal {
+  name: string;
+}
+
 const Dashboard: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
 
@@ -62,6 +68,9 @@ const Dashboard: React.FC = () => {
   const [notes, setNotes] = useState<Note[]>([]);
   const [note, setNote] = useState<Note>();
   const [verify, setVerify] = useState(false);
+
+  const [addModalNote, setAddModalNote] = useState(false);
+  const [addModalCategory, setAddModalCategory] = useState(false);
 
   useEffect(() => {
     api.get('categories').then(response => {
@@ -109,19 +118,19 @@ const Dashboard: React.FC = () => {
 
   const updateListNotes = useCallback(
     (data: NoteFormData): void => {
-      // const itemNote = notes.find(noteItem => noteItem.id === noteSelected);
+      const itemNote = notes.find(noteItem => noteItem.id === noteSelected);
       const notess = notes.filter(noteItem => noteItem.id !== noteSelected);
 
-      if (note) {
-        note.name = data.name;
-        note.content = data.content;
-        note.updatedAt = new Date();
+      if (itemNote) {
+        itemNote.name = data.name;
+        itemNote.content = data.content;
+        itemNote.updatedAt = new Date();
 
-        notess.unshift(note);
+        notess.unshift(itemNote);
         setNotes(notess);
       }
     },
-    [noteSelected, notes, note],
+    [noteSelected, notes],
   );
 
   const handleSubmit = useCallback(
@@ -136,7 +145,16 @@ const Dashboard: React.FC = () => {
 
   const handleDeleteNote = useCallback(async () => {
     await api.delete(`notes/${noteSelected}`);
-  }, [noteSelected]);
+
+    setNotes(state => state.filter(item => item.id !== noteSelected));
+
+    const upNote = notes[0];
+
+    setNote(upNote);
+    setTitleNote(upNote.id);
+    setContentNote(upNote.content);
+    setNoteSelected(upNote.id);
+  }, [noteSelected, notes]);
 
   const selectedDateAsText = useMemo(() => {
     if (note) {
@@ -148,8 +166,55 @@ const Dashboard: React.FC = () => {
     return '';
   }, [note]);
 
+  function toggleModalNote(): void {
+    setAddModalNote(!addModalNote);
+  }
+
+  function toggleModalCategory(): void {
+    setAddModalCategory(!addModalCategory);
+  }
+
+  async function handleAddNote(nameNote: IRequestModal): Promise<void> {
+    const newNote = {
+      name: nameNote.name,
+      categoryId: categorySelected,
+      content: '',
+    };
+
+    const response = await api.post('notes', newNote);
+
+    setNotes(state => [response.data, ...state]);
+    setNote(response.data);
+    setTitleNote(response.data.name);
+    setContentNote(response.data.content);
+    setNoteSelected(response.data.id);
+  }
+
+  async function handleAddCategory(nameCategory: IRequestModal): Promise<void> {
+    const response = await api.post('categories', nameCategory);
+
+    setCategories(state => [response.data, ...state]);
+    setCategorySelected(response.data.id);
+  }
+
   return (
     <Container>
+      {/* add a new category */}
+      <ModalAdd
+        title="Add your category title"
+        isOpen={addModalCategory}
+        setClose={toggleModalCategory}
+        handleAdd={handleAddCategory}
+      />
+
+      {/* add a new note */}
+      <ModalAdd
+        title="Add your note title"
+        isOpen={addModalNote}
+        setClose={toggleModalNote}
+        handleAdd={handleAddNote}
+      />
+
       <Header>
         <div>
           <h1>oNotes</h1>
@@ -162,10 +227,11 @@ const Dashboard: React.FC = () => {
           </div>
         </div>
       </Header>
-
       <ContainerNotes>
         <ListCategories>
-          <button type="button">create category</button>
+          <button type="button" onClick={toggleModalCategory}>
+            create category
+          </button>
 
           {categories &&
             categories.map(itemCategory => (
@@ -182,7 +248,9 @@ const Dashboard: React.FC = () => {
         </ListCategories>
 
         <ListNotes>
-          <button type="button">create note</button>
+          <button type="button" onClick={toggleModalNote}>
+            create note
+          </button>
           {notes.map(itemNote => (
             <NoteItem
               selected={itemNote.id === noteSelected}
