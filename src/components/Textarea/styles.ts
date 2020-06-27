@@ -40,5 +40,24 @@ export const Container = styled.div<ContainerProps>`
       css`
         border-color: #ff9000;
       `}
+
+
+
+    &::-webkit-scrollbar-track {
+      background-color: #9a9494;
+      border-radius: 50px;
+    }
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: #ff9000;
+      border-radius: 50px;
+    }
+
+    &::-webkit-scrollbar-button {
+      width: 6px;
+      height: 6px;
+    }
   }
 `;
