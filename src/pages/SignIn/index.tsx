@@ -52,6 +52,7 @@ const SignIn: React.FC = () => {
         if (error instanceof Yup.ValidationError) {
           const errors = getValidationErrors(error);
           formRef.current?.setErrors(errors);
+          return;
         }
         addToast({
           type: 'error',
@@ -71,7 +72,7 @@ const SignIn: React.FC = () => {
           <p>Yours notes in anywhere</p>
 
           <Input name="email" placeholder="E-mail" />
-          <Input name="password" placeholder="Password" />
+          <Input name="password" type="password" placeholder="Password" />
 
           <Button type="submit">LOGIN</Button>
 

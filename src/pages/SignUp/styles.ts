@@ -48,7 +48,6 @@ export const Content = styled.div`
 
   > a {
     color: #f4ede8;
-    display: block;
     margin-top: 24px;
     font-size: 2rem;
     text-decoration: none;
@@ -58,7 +57,7 @@ export const Content = styled.div`
     align-items: center;
 
     svg {
-      margin-right: 16px;
+      margin-right: 12px;
     }
 
     &:hover {
