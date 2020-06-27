@@ -3,8 +3,6 @@ import { Form as Unform } from '@unform/web';
 
 export const Form = styled(Unform)`
   padding: 48px 30px;
-  display: flex;
-  flex-direction: column;
 
   h2 {
     font-weight: 600;
@@ -14,10 +12,6 @@ export const Form = styled(Unform)`
 
   button {
     margin-top: 48px;
-    align-self: flex-end;
-  }
-
-  button {
     font-weight: 500;
     background: #312e38;
   }

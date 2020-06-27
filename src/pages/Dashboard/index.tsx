@@ -31,6 +31,7 @@ import Input from '../../components/Input';
 import Textarea from '../../components/Textarea';
 
 import ModalAdd from '../../components/ModalAdd';
+import ModalDelete from '../../components/ModalDeleteConfirmation';
 
 interface Categories {
   id: string;
@@ -71,6 +72,7 @@ const Dashboard: React.FC = () => {
 
   const [addModalNote, setAddModalNote] = useState(false);
   const [addModalCategory, setAddModalCategory] = useState(false);
+  const [modalDelete, setModalDelete] = useState(false);
 
   useEffect(() => {
     api.get('categories').then(response => {
@@ -151,7 +153,7 @@ const Dashboard: React.FC = () => {
     const upNote = notes[0];
 
     setNote(upNote);
-    setTitleNote(upNote.id);
+    setTitleNote(upNote.name);
     setContentNote(upNote.content);
     setNoteSelected(upNote.id);
   }, [noteSelected, notes]);
@@ -172,6 +174,10 @@ const Dashboard: React.FC = () => {
 
   function toggleModalCategory(): void {
     setAddModalCategory(!addModalCategory);
+  }
+
+  function toggleModalDelete(): void {
+    setModalDelete(!modalDelete);
   }
 
   async function handleAddNote(nameNote: IRequestModal): Promise<void> {
@@ -213,6 +219,13 @@ const Dashboard: React.FC = () => {
         isOpen={addModalNote}
         setClose={toggleModalNote}
         handleAdd={handleAddNote}
+      />
+
+      {/* delete confirmation */}
+      <ModalDelete
+        isOpen={modalDelete}
+        setClose={toggleModalDelete}
+        handleDelete={handleDeleteNote}
       />
 
       <Header>
@@ -284,7 +297,8 @@ const Dashboard: React.FC = () => {
 
               <div>
                 <button type="button">
-                  <FiTrash size={24} onClick={handleDeleteNote} />
+                  {/* <FiTrash size={24} onClick={handleDeleteNote} /> */}
+                  <FiTrash size={24} onClick={toggleModalDelete} />
                 </button>
 
                 <button type="submit">Save</button>
