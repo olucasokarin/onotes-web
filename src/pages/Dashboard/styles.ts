@@ -17,7 +17,7 @@ export const Container = styled.div`
 `;
 
 export const Header = styled.header`
-  height: 145px;
+  height: 105px;
   width: 100%;
   background: #28262e;
   display: flex;
@@ -52,18 +52,48 @@ export const Header = styled.header`
 
 export const ContainerNotes = styled.div`
   padding: 50px 0;
+  /* margin-top: 50px; */
 
   display: flex;
   flex-direction: row;
 
   max-width: 1250px;
   width: 95%;
+  height: calc(100vh - 105px);
 `;
 
 export const ListCategories = styled.div`
   display: flex;
   flex-direction: column;
-  min-width: 270px;
+  min-width: 285px;
+
+  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  &::-webkit-scrollbar-track {
+    background-color: #9a9494;
+    border-radius: 50px;
+  }
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: #ff9000;
+    border-radius: 50px;
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-button {
+    width: 2px;
+    height: 2px;
+  }
+`;
+
+export const ListCategoriesContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  /* height: calc(100vh - 245px); */
 
   button {
     align-self: center;
@@ -92,7 +122,7 @@ export const CategoryItem = styled.div<CategoryItemProps>`
   color: #fff;
   border: 0;
   width: 270px;
-  height: 60px;
+  min-height: 60px;
   padding: 0 15px 0 36px;
 
   border-radius: 5px;
@@ -103,12 +133,38 @@ export const CategoryItem = styled.div<CategoryItemProps>`
 `;
 
 export const ListNotes = styled.div`
+  display: flex;
+  flex-direction: column;
+  min-width: 285px;
+
+  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  &::-webkit-scrollbar-track {
+    background-color: #9a9494;
+    border-radius: 50px;
+  }
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: #ff9000;
+    border-radius: 50px;
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-button {
+    width: 2px;
+    height: 2px;
+  }
+`;
+
+export const ListNotesContainer = styled.div`
   margin-left: 10px;
   display: flex;
   flex-direction: column;
-  min-width: 270px;
-
-  /* height: 80vh; */
+  /* height: calc(100vh - 245px); */
 
   button {
     align-self: center;
@@ -137,8 +193,8 @@ export const NoteItem = styled.div<NoteItemProps>`
 
   width: 270px;
   height: 60px;
+  min-height: 60px;
   padding: 0 36px;
-
   border-radius: 5px;
 
   span {
@@ -161,7 +217,7 @@ export const NoteContent = styled.div`
   flex-direction: column;
   min-width: 200px;
   width: 100vw;
-  height: calc(100vh - 215px);
+  /* height: calc(100vh - 245px); */
 
   margin-left: 40px;
 

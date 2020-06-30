@@ -18,11 +18,13 @@ import {
   Container,
   Header,
   ContainerNotes,
-  ListCategories,
+  ListCategoriesContainer,
+  ListNotesContainer,
   ListNotes,
   NoteContent,
   NoteItem,
   CategoryItem,
+  ListCategories,
 } from './styles';
 import api from '../../services/api';
 import { useAuth } from '../../hooks/auth';
@@ -241,40 +243,45 @@ const Dashboard: React.FC = () => {
         </div>
       </Header>
       <ContainerNotes>
-        <ListCategories>
+        <ListCategoriesContainer>
           <button type="button" onClick={toggleModalCategory}>
             create category
           </button>
 
-          {categories &&
-            categories.map(itemCategory => (
-              <CategoryItem
-                key={itemCategory.id}
-                selected={itemCategory.id === categorySelected}
-                onClick={() => handleCategoryChange(itemCategory.id)}
-              >
-                {itemCategory.name}
+          <ListCategories>
+            {categories &&
+              categories.map(itemCategory => (
+                <CategoryItem
+                  key={itemCategory.id}
+                  selected={itemCategory.id === categorySelected}
+                  onClick={() => handleCategoryChange(itemCategory.id)}
+                >
+                  {itemCategory.name}
 
-                <FiMoreVertical size={22} />
-              </CategoryItem>
-            ))}
-        </ListCategories>
+                  <FiMoreVertical size={22} />
+                </CategoryItem>
+              ))}
+          </ListCategories>
+        </ListCategoriesContainer>
 
-        <ListNotes>
+        <ListNotesContainer>
           <button type="button" onClick={toggleModalNote}>
             create note
           </button>
-          {notes.map(itemNote => (
-            <NoteItem
-              selected={itemNote.id === noteSelected}
-              key={itemNote.id}
-              onClick={() => handleNoteChange(itemNote)}
-            >
-              {itemNote.name}
-              <span>{itemNote.content}</span>
-            </NoteItem>
-          ))}
-        </ListNotes>
+
+          <ListNotes>
+            {notes.map(itemNote => (
+              <NoteItem
+                selected={itemNote.id === noteSelected}
+                key={itemNote.id}
+                onClick={() => handleNoteChange(itemNote)}
+              >
+                {itemNote.name}
+                <span>{itemNote.content}</span>
+              </NoteItem>
+            ))}
+          </ListNotes>
+        </ListNotesContainer>
 
         <NoteContent>
           {verify && note ? (
