@@ -34,8 +34,9 @@ import Textarea from '../../components/Textarea';
 
 import ModalAdd from '../../components/ModalAdd';
 import ModalDelete from '../../components/ModalDeleteConfirmation';
+import ModalEditCategory from '../../components/ModalEditCategory';
 
-interface Categories {
+interface Category {
   id: string;
   name: string;
   updatedAt: Date;
@@ -67,7 +68,8 @@ const Dashboard: React.FC = () => {
   const [noteSelected, setNoteSelected] = useState('');
   const [categorySelected, setCategorySelected] = useState('');
 
-  const [categories, setCategories] = useState<Categories[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [category, setCategory] = useState<Category>({} as Category);
   const [notes, setNotes] = useState<Note[]>([]);
   const [note, setNote] = useState<Note>();
   const [verify, setVerify] = useState(false);
@@ -75,6 +77,7 @@ const Dashboard: React.FC = () => {
   const [addModalNote, setAddModalNote] = useState(false);
   const [addModalCategory, setAddModalCategory] = useState(false);
   const [modalDelete, setModalDelete] = useState(false);
+  const [modalEditCategory, setModalEditCategory] = useState(false);
 
   useEffect(() => {
     api.get('categories').then(response => {
@@ -109,8 +112,9 @@ const Dashboard: React.FC = () => {
     else setVerify(true);
   }, [notes]);
 
-  const handleCategoryChange = useCallback((id: string) => {
-    setCategorySelected(id);
+  const handleCategoryChange = useCallback((categoryItem: Category) => {
+    setCategorySelected(categoryItem.id);
+    setCategory(categoryItem);
   }, []);
 
   const handleNoteChange = useCallback((noteItem: Note) => {
@@ -123,15 +127,15 @@ const Dashboard: React.FC = () => {
   const updateListNotes = useCallback(
     (data: NoteFormData): void => {
       const itemNote = notes.find(noteItem => noteItem.id === noteSelected);
-      const notess = notes.filter(noteItem => noteItem.id !== noteSelected);
+      const listNote = notes.filter(noteItem => noteItem.id !== noteSelected);
 
       if (itemNote) {
         itemNote.name = data.name;
         itemNote.content = data.content;
         itemNote.updatedAt = new Date();
 
-        notess.unshift(itemNote);
-        setNotes(notess);
+        listNote.unshift(itemNote);
+        setNotes(listNote);
       }
     },
     [noteSelected, notes],
@@ -150,10 +154,11 @@ const Dashboard: React.FC = () => {
   const handleDeleteNote = useCallback(async () => {
     await api.delete(`notes/${noteSelected}`);
 
-    setNotes(state => state.filter(item => item.id !== noteSelected));
+    const newNotes = notes.filter(item => item.id !== noteSelected);
 
-    const upNote = notes[0];
+    const upNote = newNotes[0];
 
+    setNotes(newNotes);
     setNote(upNote);
     setTitleNote(upNote.name);
     setContentNote(upNote.content);
@@ -182,6 +187,10 @@ const Dashboard: React.FC = () => {
     setModalDelete(!modalDelete);
   }
 
+  function toggleModalEditCategory(): void {
+    setModalEditCategory(!modalEditCategory);
+  }
+
   async function handleAddNote(nameNote: IRequestModal): Promise<void> {
     const newNote = {
       name: nameNote.name,
@@ -204,6 +213,34 @@ const Dashboard: React.FC = () => {
     setCategories(state => [response.data, ...state]);
     setCategorySelected(response.data.id);
   }
+
+  async function handleEditCategory(
+    nameCategory: IRequestModal,
+  ): Promise<void> {
+    try {
+      const response = await api.put(`categories/${category.id}`, nameCategory);
+
+      const listCategory = categories.filter(
+        categoryItem => categoryItem.id !== category.id,
+      );
+
+      category.name = nameCategory.name;
+      listCategory.unshift(category);
+      setCategories(listCategory);
+      setCategorySelected(response.data.id);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  const handleDeleteCategory = useCallback(async () => {
+    await api.delete(`categories/${categorySelected}`);
+    const listCategory = categories.filter(
+      item => item.id !== categorySelected,
+    );
+    setCategories(listCategory);
+    setCategorySelected(listCategory[0].id);
+  }, [categorySelected, categories]);
 
   return (
     <Container>
@@ -230,6 +267,15 @@ const Dashboard: React.FC = () => {
         handleDelete={handleDeleteNote}
       />
 
+      {/* edit category */}
+      <ModalEditCategory
+        isOpen={modalEditCategory}
+        setClose={toggleModalEditCategory}
+        handleEditCategory={handleEditCategory}
+        handleDeleteCategory={handleDeleteCategory}
+        editingCategory={category}
+      />
+
       <Header>
         <div>
           <h1>oNotes</h1>
@@ -254,11 +300,13 @@ const Dashboard: React.FC = () => {
                 <CategoryItem
                   key={itemCategory.id}
                   selected={itemCategory.id === categorySelected}
-                  onClick={() => handleCategoryChange(itemCategory.id)}
+                  onClick={() => handleCategoryChange(itemCategory)}
                 >
                   {itemCategory.name}
 
-                  <FiMoreVertical size={22} />
+                  <button type="button" onClick={toggleModalEditCategory}>
+                    <FiMoreVertical size={22} />
+                  </button>
                 </CategoryItem>
               ))}
           </ListCategories>
@@ -304,7 +352,6 @@ const Dashboard: React.FC = () => {
 
               <div>
                 <button type="button">
-                  {/* <FiTrash size={24} onClick={handleDeleteNote} /> */}
                   <FiTrash size={24} onClick={toggleModalDelete} />
                 </button>
 

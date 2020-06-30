@@ -95,7 +95,7 @@ export const ListCategoriesContainer = styled.div`
   flex-direction: column;
   /* height: calc(100vh - 245px); */
 
-  button {
+  > button {
     align-self: center;
     background: #3e3b47;
 
@@ -129,6 +129,19 @@ export const CategoryItem = styled.div<CategoryItemProps>`
 
   & + div {
     margin-top: 5px;
+  }
+
+  button {
+    background: transparent;
+    border: 0;
+    color: #f4ede8;
+    transition: background-color 0.2s;
+
+    &:hover {
+      svg {
+        color: ${shade(0.3, '#f4ede8')};
+      }
+    }
   }
 `;
 
