@@ -91,11 +91,11 @@ const ModalEditCategory: React.FC<IModalProps> = ({
         </Container>
 
         <Footer>
-          <button type="button" onClick={handleVisibleDelete}>
-            cancel
-          </button>
           <button type="button" onClick={handleDelete}>
             Yes, Delete it!
+          </button>
+          <button type="button" onClick={handleVisibleDelete}>
+            cancel
           </button>
         </Footer>
       </ContainerDelete>

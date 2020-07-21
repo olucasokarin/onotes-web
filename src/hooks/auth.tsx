@@ -52,9 +52,12 @@ const AuthProvider: React.FC = ({ children }) => {
     if (hourLogin) {
       const hourFormated = new Date(JSON.parse(hourLogin));
 
-      const diff = differenceInHours(new Date(), new Date(hourFormated));
-      if (diff >= 24) logout();
-      return {} as AuthState;
+      const difference = differenceInHours(new Date(), new Date(hourFormated));
+
+      if (difference >= 24) {
+        logout();
+        return {} as AuthState;
+      }
     }
 
     if (token && user) {

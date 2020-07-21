@@ -107,12 +107,19 @@ export const ContainerDelete = styled.div<ContainerDeleteProps>`
   flex-direction: column;
   animation: ${appearFromTop} 0.4s;
 
-  button + button {
-    margin-left: 0;
+  button {
     background: #f15e5e;
 
     &:hover {
       background: ${shade(0.3, '#f15e5e')};
+    }
+  }
+  button + button {
+    margin-left: 0;
+    background: #3e3b47;
+
+    &:hover {
+      background: ${shade(0.3, '#3e3b47')};
     }
   }
 `;

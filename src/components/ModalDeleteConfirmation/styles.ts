@@ -23,7 +23,7 @@ export const Footer = styled.footer`
 
   button {
     height: 42px;
-    background: #3e3b47;
+    background: #f15e5e;
     border: 0;
     border-radius: 8px;
     padding: 0 26px;
@@ -36,16 +36,16 @@ export const Footer = styled.footer`
     transition: background-color 0.2s;
 
     &:hover {
-      background: ${shade(0.3, '#3e3b47')};
+      background: ${shade(0.3, '#f15e5e')};
     }
   }
 
   button + button {
     margin-left: 0;
-    background: #f15e5e;
+    background: #3e3b47;
 
     &:hover {
-      background: ${shade(0.3, '#f15e5e')};
+      background: ${shade(0.3, '#3e3b47')};
     }
   }
 `;

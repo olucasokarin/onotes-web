@@ -31,11 +31,11 @@ const ModalDeleteConfirmation: React.FC<IModalProps> = ({
       </Container>
 
       <Footer>
+        <button type="button" onClick={handleConfirmation}>
+          Yes, Delete it!
+        </button>
         <button type="button" onClick={setClose}>
           cancel
-        </button>
-        <button type="button" onClick={handleConfirmation}>
-          Delete it!
         </button>
       </Footer>
     </Modal>
