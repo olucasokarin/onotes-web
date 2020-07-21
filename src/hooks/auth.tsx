@@ -1,4 +1,5 @@
 import React, { createContext, useCallback, useState, useContext } from 'react';
+import { differenceInHours } from 'date-fns';
 
 import api from '../services/api';
 
@@ -37,9 +38,24 @@ function useAuth(): AuthContextData {
 }
 
 const AuthProvider: React.FC = ({ children }) => {
+  const logout = useCallback(() => {
+    localStorage.removeItem('@onotes:token');
+    localStorage.removeItem('@onotes:user');
+    localStorage.removeItem('@onotes:hour');
+  }, []);
+
   const [data, setData] = useState<AuthState>(() => {
     const token = localStorage.getItem('@onotes:token');
     const user = localStorage.getItem('@onotes:user');
+    const hourLogin = localStorage.getItem('@onotes:hour');
+
+    if (hourLogin) {
+      const hourFormated = new Date(JSON.parse(hourLogin));
+
+      const diff = differenceInHours(new Date(), new Date(hourFormated));
+      if (diff >= 24) logout();
+      return {} as AuthState;
+    }
 
     if (token && user) {
       api.defaults.headers.authorization = `Bearer ${token}`;
@@ -57,9 +73,11 @@ const AuthProvider: React.FC = ({ children }) => {
     });
 
     const { token, user } = response.data;
+    const date = new Date(Date.now());
 
     localStorage.setItem('@onotes:token', token);
     localStorage.setItem('@onotes:user', JSON.stringify(user));
+    localStorage.setItem('@onotes:hour', JSON.stringify(date));
 
     api.defaults.headers.authorization = `Bearer ${token}`;
 
@@ -67,11 +85,10 @@ const AuthProvider: React.FC = ({ children }) => {
   }, []);
 
   const signOut = useCallback(() => {
-    localStorage.removeItem('@onotes:token');
-    localStorage.removeItem('@onotes:user');
+    logout();
 
     setData({} as AuthState);
-  }, []);
+  }, [logout]);
 
   const updateUser = useCallback(
     (user: User) => {

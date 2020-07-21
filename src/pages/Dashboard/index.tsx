@@ -35,6 +35,7 @@ import Textarea from '../../components/Textarea';
 import ModalAdd from '../../components/ModalAdd';
 import ModalDelete from '../../components/ModalDeleteConfirmation';
 import ModalEditCategory from '../../components/ModalEditCategory';
+import { useToast } from '../../hooks/toast';
 
 interface Category {
   id: string;
@@ -61,6 +62,7 @@ interface IRequestModal {
 const Dashboard: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
 
+  const { addToast } = useToast();
   const { signOut } = useAuth();
 
   const [titleNote, setTitleNote] = useState('');
@@ -105,6 +107,7 @@ const Dashboard: React.FC = () => {
             setNoteSelected(response.data[0].id);
           }
         });
+    else setNotes([]);
   }, [categorySelected]);
 
   useEffect(() => {
@@ -160,9 +163,9 @@ const Dashboard: React.FC = () => {
 
     setNotes(newNotes);
     setNote(upNote);
-    setTitleNote(upNote.name);
-    setContentNote(upNote.content);
-    setNoteSelected(upNote.id);
+    setTitleNote(upNote?.name);
+    setContentNote(upNote?.content);
+    setNoteSelected(upNote?.id);
   }, [noteSelected, notes]);
 
   const selectedDateAsText = useMemo(() => {
@@ -176,7 +179,15 @@ const Dashboard: React.FC = () => {
   }, [note]);
 
   function toggleModalNote(): void {
-    setAddModalNote(!addModalNote);
+    console.log(categorySelected);
+
+    if (categorySelected === '' || categorySelected === undefined)
+      addToast({
+        type: 'info',
+        title: 'Create Note',
+        description: 'Para poder criar uma nota, primeiro crie uma categoria',
+      });
+    else setAddModalNote(!addModalNote);
   }
 
   function toggleModalCategory(): void {
@@ -239,7 +250,9 @@ const Dashboard: React.FC = () => {
       item => item.id !== categorySelected,
     );
     setCategories(listCategory);
-    setCategorySelected(listCategory[0].id);
+
+    if (listCategory.length > 0) setCategorySelected(listCategory[0].id);
+    else setCategorySelected('');
   }, [categorySelected, categories]);
 
   return (
@@ -313,9 +326,11 @@ const Dashboard: React.FC = () => {
         </ListCategoriesContainer>
 
         <ListNotesContainer>
-          <button type="button" onClick={toggleModalNote}>
-            create note
-          </button>
+          {categorySelected && (
+            <button type="button" onClick={toggleModalNote}>
+              create note
+            </button>
+          )}
 
           <ListNotes>
             {notes.map(itemNote => (
