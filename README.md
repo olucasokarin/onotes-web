@@ -1,44 +1,74 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<h1 align="center">
+    oNotes
+</h1>
 
-## Available Scripts
+## oNotes
+Esse é um projeto frontend de um sistema de anotações
 
-In the project directory, you can run:
 
-### `yarn start`
+<p align="center">
+  <a href="#tecnologias">Tecnologias</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#projeto">Projeto</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#começando">Começando</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#telas-do-projeto">Telas do projeto</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#licença">Licença</a>
+</p>
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+## Tecnologias
 
-### `yarn test`
+Esse projeto foi desenvolvido com algumas tecnologias, entre quais são:
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `yarn build`
+- [axios](https://github.com/axios/axios)
+- [react](https://reactjs.org/)
+- [react-router-dom](https://reactrouter.com/web/guides/quick-start)
+- [react-modal](https://github.com/reactjs/react-modal)
+- [styled components](https://styled-components.com/)
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+## Projeto
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+oNotes é um projeto de anotações, onde poderá ter suas notas em todo lugar
+esse projeto é o frontend da aplicação, e o código do backend está em [onotes back](https://github.com/olucasokarin/onotes-back.git).
 
-### `yarn eject`
+Resolvi desenvolver esse projeto quando tive algumas dificuldades de acessar minhas notas do app de notas do meu celular. \
+E resolvi desenvolver meu próprio projeto para tal, sendo que ainda terá um app feito em react native.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Começando
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+ 1. Clone esse repositorio ```git clone https://github.com/olucasokarin/onotes-web.git```
+ 2. Mova para a directorio: ```cd onotes-web```
+ 3. Run ```yarn``` para instalar as dependências
+ 4. Run ```yarn start```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Learn More
+## Telas do projeto
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Tela principal
+![tela_principal](.github/main.png)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Tela do modal de criação de categoria
+![create_category](.github/create_category.png)
+
+### Tela do modal de criação de notas
+![create_note](.github/create_note.png)
+
+### Tela do modal de confirmação antes de deletar a nota
+![delete_confirmation](.github/delete_confirmation.png)
+
+### Tela do modal de edição da categoria
+![edit_category](.github/edit_category.png)
+
+### Tela do modal de confirmação antes de deletar a categoria
+![delete_confirmation_category](.github/delete_confirmation_category.png)
+
+
+
+
+
+ ## Licença
+
+Esse projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+
